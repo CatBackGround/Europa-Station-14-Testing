@@ -1,0 +1,26 @@
+name: Changelog Discord Notifier
+
+on:
+  workflow_dispatch:  # Запуск вручную
+  push:
+    branches: [ master ]  # Или ваша основная ветка
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests pyyaml
+
+      - name: Run Changelog Discord Notifier
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: Tools/actions_changelogs_since_last_run.py  # Укажите путь к скрипту
