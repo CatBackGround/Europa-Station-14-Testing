@@ -157,11 +157,11 @@ def send_discord_webhook(lines: list[str]):
     print(lines)
     formatted_changes = []
     
-    for i in range(1, len(message_lines)):
-        print("Массив: ", len(message_lines))
+    for i in range(1, len(lines)):
+        print("Массив: ", len(lines))
         print(i)
-        print(message_lines[i])
-        formatted_changes.append(message_lines[i])
+        print(lines[i])
+        formatted_changes.append(lines[i])
         print("Yes.")
     
     print(formatted_changes)
