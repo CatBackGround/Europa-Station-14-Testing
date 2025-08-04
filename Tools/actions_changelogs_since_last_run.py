@@ -57,6 +57,7 @@ def main():
 
     diff = diff_changelog(last_changelog, cur_changelog)
     message_lines = changelog_entries_to_message_lines(diff)
+    print(message_lines)
     send_discord_webhook(message_lines)
 
 
