@@ -4,6 +4,7 @@ on:
   workflow_dispatch:  # Запуск вручную
   push:
     branches: [ master ]  # Или ваша основная ветка
+    paths: ['Resources/Changelog/**']
 
 jobs:
   notify-discord:
