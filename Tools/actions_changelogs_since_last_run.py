@@ -28,7 +28,7 @@ GITHUB_API_URL = os.environ.get("GITHUB_API_URL", "https://api.github.com")
 
 # https://discord.com/developers/docs/resources/webhook
 DISCORD_SPLIT_LIMIT = 2000
-DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1400554727816822864/ATrLifOM0_oSKrUdsb7_qHSubLKuMyIDSqDWm2H-FwlPWQ71Gqz4hnVYVEmDd5OkVP_l"
 
 CHANGELOG_FILE = "Resources/Changelog/GoobChangelog.yml"
 
@@ -57,7 +57,7 @@ def main():
 
     diff = diff_changelog(last_changelog, cur_changelog)
     message_lines = changelog_entries_to_message_lines(diff)
-    send_message_lines(message_lines)
+    send_discord_webhook(message_lines)
 
 
 def get_most_recent_workflow(
@@ -154,8 +154,27 @@ def get_discord_body(content: str):
 
 
 def send_discord_webhook(lines: list[str]):
-    content = "".join(lines)
-    body = get_discord_body(content)
+    formatted_changes = []
+    
+    for i in range(1, len(message_lines)):
+        print("Массив: ", len(message_lines))
+        print(i)
+        print(message_lines[i])
+        formatted_changes.append(message_lines[i])
+        print("Yes.")
+    
+    print(formatted_changes)
+    formatted_changes_text = "".join(formatted_changes)
+    
+    embed = {
+        "title": lines[0],
+        "description": formatted_changes_text,
+        "color": 0x00ff00,  # Зеленый цвет
+    }
+    
+    body = {
+        "embeds": [embed],
+    }
 
     response = requests.post(DISCORD_WEBHOOK_URL, json=body)
     response.raise_for_status()
@@ -181,13 +200,14 @@ def changelog_entries_to_message_lines(entries: Iterable[ChangelogEntry]) -> lis
                 if len(message) > DISCORD_SPLIT_LIMIT:
                     message = message[: DISCORD_SPLIT_LIMIT - 100].rstrip() + " [...]"
 
-                if url is not None:
-                    line = f"{emoji} - {message} [PR]({url}) \n"
-                else:
-                    line = f"{emoji} - {message}\n"
+                line = f"{emoji} - {message}\n"
 
                 message_lines.append(line)
-
+            
+            if url is not None:
+                urlLine = f"[GitHub Pull Request]({url})"
+                message_lines.append(urlLine)
+                
     return message_lines
 
 
