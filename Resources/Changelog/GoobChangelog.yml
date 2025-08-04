@@ -12841,3 +12841,15 @@ Entries:
       message: Test changelog 2.
   id: 1419
   time: '2025-08-04T00:00.0000000+00:00'
+- author: CatBackGround
+  changes:
+    - type: Add
+      message: Test changelog 2.
+    - type: Remove
+      message: Test changelog 2.
+    - type: Tweak
+      message: Test changelog 2.
+    - type: Fix
+      message: Test changelog 2.
+  id: 1420
+  time: '2025-08-04T00:00.0000000+00:00'
